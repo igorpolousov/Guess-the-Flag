@@ -1,7 +1,7 @@
 //
 //  ViewController.swift
 //  Guess the Flag
-//  Day 19 and 20
+//  Day 19,20 and 21
 //  Created by Igor Polousov on 16.06.2021.
 //
 
