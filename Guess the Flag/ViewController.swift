@@ -1,7 +1,7 @@
 //
 //  ViewController.swift
 //  Guess the Flag
-//
+//  Day 19 and 20
 //  Created by Igor Polousov on 16.06.2021.
 //
 
@@ -12,11 +12,86 @@ class ViewController: UIViewController {
     @IBOutlet var button2: UIButton!
     @IBOutlet var button3: UIButton!
     
+    var countries = [String]()
+    var score = 0
+    var correctAnswer = 0
+    var attemptsCounter = 0
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        countries.append("estonia")
+        countries.append("france")
+        countries.append("germany")
+        countries.append("ireland")
+        countries.append("italy")
+        countries.append("monaco")
+        countries.append("nigeria")
+        countries.append("poland")
+        countries.append("russia")
+        countries.append("spain")
+        countries.append("uk")
+        countries.append("us")
+        
+        button1.layer.borderWidth = 1
+        button2.layer.borderWidth = 1
+        button3.layer.borderWidth = 1
+        
+        button1.layer.borderColor = UIColor.darkGray.cgColor
+        button2.layer.borderColor = UIColor.darkGray.cgColor
+        button3.layer.borderColor = UIColor.darkGray.cgColor
+        
+        askQuestion()
     }
-
+    
+   
+    
+    func askQuestion(action: UIAlertAction! = nil) {
+        
+        countries.shuffle()
+        // Поскольку для выбора флагов для размещения на кнопках выбраны названия стран с индексами от 0 до 2, делаем генерацию случайного числа от 0 до 2
+        correctAnswer = Int.random(in: 0...2)
+        
+        button1.setImage(UIImage(named: countries[0]), for: .normal)
+        button2.setImage(UIImage(named: countries[1]), for: .normal)
+        button3.setImage(UIImage(named: countries[2]), for: .normal)
+        
+        // Покажет название одного из выбранного случайных образом флагов в заголовке таблицы
+        title = "\(countries[correctAnswer].uppercased()) Score = \(score)"
+        print(attemptsCounter)
+    }
+    
+    @IBAction func buttonTapped(_ sender: UIButton) {
+        var title: String
+        
+        if sender.tag == correctAnswer {
+            title = "Correct"
+            score += 1
+        } else {
+            title = "Wrong"
+            score -= 1
+        }
+        
+        attemptsCounter += 1
+        
+        let ac = UIAlertController(title: title , message: "Your score is \(score)", preferredStyle: .alert)
+        
+        if attemptsCounter < 5 {
+        ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
+        } else {
+            ac.title = "Game over"
+            ac.message = "Number of attempts is maximum(5). Your score is \(score)"
+            ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
+            attemptsCounter = 0
+            score = 0
+            
+        }
+        present(ac, animated: true)
+    }
+    
 
 }
 
