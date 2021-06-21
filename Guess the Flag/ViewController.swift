@@ -45,6 +45,9 @@ class ViewController: UIViewController {
         button3.layer.borderColor = UIColor.darkGray.cgColor
         
         askQuestion()
+        
+        // Добавил кнопку в navigation bar справа, функция showScore() ниже
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(showScore))
     }
     
    
@@ -89,6 +92,19 @@ class ViewController: UIViewController {
             score = 0
             
         }
+        present(ac, animated: true)
+    }
+   
+    // Функция которая показывает alert controller
+    @objc func showScore() {
+        
+        // Задаём контроллёр alert controller - ac
+        let ac = UIAlertController(title: "Your current score:", message: "\(score)", preferredStyle: .alert)
+        
+        // Задаем что будет на кнопке alert controller - ac
+        ac.addAction(UIAlertAction(title: "Done", style: .default))
+        
+        // Указываем что надо показать ac
         present(ac, animated: true)
     }
     
