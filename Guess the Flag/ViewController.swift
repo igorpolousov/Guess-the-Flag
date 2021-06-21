@@ -82,7 +82,7 @@ class ViewController: UIViewController {
         
         let ac = UIAlertController(title: title , message: "Your score is \(score)", preferredStyle: .alert)
         
-        if attemptsCounter < 5 {
+        if attemptsCounter < 10 {
         ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
         } else {
             ac.title = "Game over"
