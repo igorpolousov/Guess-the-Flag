@@ -86,7 +86,7 @@ class ViewController: UIViewController {
         ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
         } else {
             ac.title = "Game over"
-            ac.message = "Number of attempts is maximum(5). Your score is \(score)"
+            ac.message = "Number of attempts is maximum(10). Your score is \(score)"
             ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
             attemptsCounter = 0
             score = 0
