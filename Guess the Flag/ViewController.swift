@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     var score = 0
     var correctAnswer = 0
     var attemptsCounter = 0
+    // Максимальное количество очков игрока
+    var highScore = 0
     
     
     
@@ -85,9 +87,12 @@ class ViewController: UIViewController {
         if attemptsCounter < 10 {
         ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
         } else {
+            if score > highScore {
+                highScore = score
+            }
             ac.title = "Game over"
-            ac.message = "Number of attempts is maximum(10). Your score is \(score)"
-            ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
+            ac.message = "Number of attempts is maximum(10). Your score is \(score). High score is \(highScore)"
+            ac.addAction(UIAlertAction(title: "Okay", style: .default, handler: askQuestion))
             attemptsCounter = 0
             score = 0
             
@@ -99,7 +104,7 @@ class ViewController: UIViewController {
     @objc func showScore() {
         
         // Задаём контроллёр alert controller - ac
-        let ac = UIAlertController(title: "Your current score:", message: "\(score)", preferredStyle: .alert)
+        let ac = UIAlertController(title: "Your current  High score:", message: "\(highScore)", preferredStyle: .alert)
         
         // Задаем что будет на кнопке alert controller - ac
         ac.addAction(UIAlertAction(title: "Done", style: .default))
