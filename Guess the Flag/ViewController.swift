@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController  {
     @IBOutlet var button1: UIButton!
     @IBOutlet var button2: UIButton!
     @IBOutlet var button3: UIButton!
@@ -49,7 +49,17 @@ class ViewController: UIViewController {
         askQuestion()
         
         // Добавил кнопку в navigation bar справа, функция showScore() ниже
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(showScore))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(showScore))
+        
+        let defaults = UserDefaults.standard
+        if let savedHighScore = defaults.object(forKey: "highScore") as? Data {
+            let jsonDecoder = JSONDecoder()
+            do {
+                highScore = try jsonDecoder.decode(Int.self, from: savedHighScore)
+            } catch  {
+                print("Failed to load High Score")
+            }
+        }
     }
     
    
@@ -71,6 +81,7 @@ class ViewController: UIViewController {
     
     @IBAction func buttonTapped(_ sender: UIButton) {
         var title: String
+        var highScoreTitle: String
         
         if sender.tag == correctAnswer {
             title = "Correct"
@@ -89,9 +100,13 @@ class ViewController: UIViewController {
         } else {
             if score > highScore {
                 highScore = score
+                save()
+                highScoreTitle = "You have a new High Score: \(highScore)! "
+            } else {
+                highScoreTitle = "High score is \(highScore)"
             }
             ac.title = "Game over"
-            ac.message = "Number of attempts is maximum(10). Your score is \(score). High score is \(highScore)"
+            ac.message = "Number of attempts is maximum(10). Your score is \(score).\n  \(highScoreTitle)"
             ac.addAction(UIAlertAction(title: "Okay", style: .default, handler: askQuestion))
             attemptsCounter = 0
             score = 0
@@ -104,7 +119,7 @@ class ViewController: UIViewController {
     @objc func showScore() {
         
         // Задаём контроллёр alert controller - ac
-        let ac = UIAlertController(title: "Your current  High score:", message: "\(highScore)", preferredStyle: .alert)
+        let ac = UIAlertController(title: "Your current High score:", message: "\(highScore)", preferredStyle: .alert)
         
         // Задаем что будет на кнопке alert controller - ac
         ac.addAction(UIAlertAction(title: "Done", style: .default))
@@ -113,6 +128,14 @@ class ViewController: UIViewController {
         present(ac, animated: true)
     }
     
-
+    func save() {
+       let jsonEncoder = JSONEncoder()
+        if let savedData = try? jsonEncoder.encode(highScore){
+            let defaults = UserDefaults.standard
+            defaults.setValue(savedData, forKey: "highScore")
+        } else {
+            print("Failed to save countries")
+        }
+    }
 }
 
