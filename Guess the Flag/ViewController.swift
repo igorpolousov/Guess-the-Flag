@@ -127,7 +127,10 @@ class ViewController: UIViewController  {
             score = 0
             
         }
-        present(ac, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.present(ac, animated: true)
+        }
+        //present(ac, animated: true)
     }
    
     // Функция которая показывает alert controller
