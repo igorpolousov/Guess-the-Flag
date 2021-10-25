@@ -67,9 +67,19 @@ class ViewController: UIViewController  {
     func askQuestion(action: UIAlertAction! = nil) {
         
         countries.shuffle()
+        
+        button1.alpha = 0
+        button2.alpha = 0
+        button3.alpha = 0
+        
         // Поскольку для выбора флагов для размещения на кнопках выбраны названия стран с индексами от 0 до 2, делаем генерацию случайного числа от 0 до 2
         correctAnswer = Int.random(in: 0...2)
-        
+        UIView.animate(withDuration: 0.5, delay: 0, options: []) {
+            self.button1.alpha = 1
+            self.button2.alpha = 1
+            self.button3.alpha = 1
+        }
+
         button1.setImage(UIImage(named: countries[0]), for: .normal)
         button2.setImage(UIImage(named: countries[1]), for: .normal)
         button3.setImage(UIImage(named: countries[2]), for: .normal)
@@ -84,6 +94,11 @@ class ViewController: UIViewController  {
         var highScoreTitle: String
         
         if sender.tag == correctAnswer {
+            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 5, options: []) {
+                sender.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+                sender.transform = .identity
+            }
+            
             title = "Correct"
             score += 1
         } else {
