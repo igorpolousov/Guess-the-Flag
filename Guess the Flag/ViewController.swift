@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import NotificationCenter
 
-class ViewController: UIViewController  {
+class ViewController: UIViewController, UNUserNotificationCenterDelegate  {
     @IBOutlet var button1: UIButton!
     @IBOutlet var button2: UIButton!
     @IBOutlet var button3: UIButton!
@@ -48,6 +49,8 @@ class ViewController: UIViewController  {
         
         askQuestion()
         
+        registerLocal()
+        
         // Добавил кнопку в navigation bar справа, функция showScore() ниже
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(showScore))
         
@@ -62,7 +65,46 @@ class ViewController: UIViewController  {
         }
     }
     
-   
+    func registerLocal() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert,.badge, .sound]) { granted, error in
+            if granted {
+                self.scheduleLocal()
+            } else {
+                print("Get off")
+            }
+        }
+    }
+    
+    func scheduleLocal() {
+        registerCategories()
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Play me again"
+        content.body = "Wo plays often plays better"
+        content.categoryIdentifier = "AAA"
+        content.sound = .default
+        
+        var dateComponent = DateComponents()
+        dateComponent.day = 1
+        print(dateComponent)
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: true)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        center.add(request)
+        
+    }
+    
+    func registerCategories() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        
+        let play = UNNotificationAction(identifier: "play", title: "Play Flags", options: .foreground)
+        let category = UNNotificationCategory(identifier: "AAA", actions: [play], intentIdentifiers: [], options: [])
+        center.setNotificationCategories([category])
+    }
     
     func askQuestion(action: UIAlertAction! = nil) {
         
