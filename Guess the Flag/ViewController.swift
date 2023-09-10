@@ -87,8 +87,12 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate  {
         content.categoryIdentifier = "AAA"
         content.sound = .default
         
+        // чтобы показать уведомление по расписанию
         var dateComponent = DateComponents()
-        dateComponent.day = 1
+        // нужно указать время( день, часы и минуты), когда будет показано уведомление
+        dateComponent.day = 10
+        dateComponent.hour = 13
+        dateComponent.minute = 00
         print(dateComponent)
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: true)
